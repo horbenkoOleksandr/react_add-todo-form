@@ -1,11 +1,12 @@
-import React from "react";
-import { TodoInfo } from "../TodoInfo";
+import React from 'react';
+import { TodoInfo } from '../TodoInfo';
 
 type Todo = {
-    id: number;
-    title: string;
-    completed: boolean;
-    userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+  userId: number;
+  user: User | null;
 };
 type User = {
   id: number;
@@ -14,25 +15,16 @@ type User = {
   email: string;
 };
 type Props = {
-    todos: Todo[];
-    users: User[]
-}
-export const TodoList: React.FC<Props> = ({todos, users}) => {
-    return (
-        <section className="TodoList">
-            {todos.map((todo) => {
-                const userFind = users.find((user) => user.id === todo.userId);
-                if (!userFind) {
-                  return null;
-                };
-                return (
-                    <TodoInfo
-                      key={todo.id}
-                      todo={todo}
-                      user={userFind}
-                    />
-                )
-            })}
-        </section>
-    )
+  todos: Todo[]
+};
+export const TodoList: React.FC<Props> = ({ todos }) => {
+  return (
+    <section className="TodoList">
+      {todos.map(todo => (
+        todo.user && (
+            <TodoInfo key={todo.id} todo={todo} user={todo.user} />
+        )
+      ))}
+    </section>
+  );
 };
